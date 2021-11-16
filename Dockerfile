@@ -21,3 +21,4 @@ RUN apt install -y ont-guppy
 RUN pip install megalodon
 RUN git clone https://github.com/nanoporetech/rerio
 RUN rerio/download_model.py rerio/basecall_models/res_dna_r941_min_modbases_5mC_CpG_v001 rerio/basecall_models/res_dna_r941_prom_modbases_5mC_CpG_v001
+RUN chmod a+r /rerio/basecall_models/*
