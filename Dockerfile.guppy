@@ -1,0 +1,18 @@
+FROM genomicpariscentre/guppy-gpu:latest
+
+ENV TZ=America/Chicago
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt update \
+    && apt install -y software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa
+
+RUN apt install -y git curl python3.9 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+RUN apt install -y python3.9-distutils
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN python3 get-pip.py
+RUN pip install numpy
+# RUN pip install megalodon
+# RUN git clone https://github.com/nanoporetech/rerio
+# RUN rerio/download_model.py rerio/basecall_models/res_dna_r941_min_modbases_5mC_CpG_v001 rerio/basecall_models/res_dna_r941_prom_modbases_5mC_CpG_v001
