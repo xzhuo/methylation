@@ -1,11 +1,11 @@
-FROM nvidia/cuda:11.4.2-devel-ubuntu20.04
+FROM nvidia/cuda:11.6.2-runtime-ubuntu20.04
 
-ENV TZ=America/Chicago
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# ENV TZ=America/Chicago
+# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y git python3 python3-pip \
-        wget lsb-release libnvidia-compute-460-server apt-transport-https \
+    && apt-get install -y wget git libnvidia-compute-510-server \
+        # python3 python3-pip lsb-release apt-transport-https \
     && apt-get clean
 
 # ENV PLATFORM=$(lsb_release -cs)
@@ -29,4 +29,6 @@ RUN tar -xf ont-guppy_6.1.2_linux64.tar.gz
 RUN rm ont-guppy_6.1.2_linux64.tar.gz
 ENV PATH=/ont-guppy/bin:$PATH
 
-RUN apt install -y nvidia-cuda-toolkit cuda-toolkit-11-2
+# RUN apt install -y cuda-toolkit-11-6
+# RUN apt-get clean
+# RUN apt install -y nvidia-cuda-toolkit 
