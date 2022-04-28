@@ -1,4 +1,4 @@
-version 0.1
+version 1.0
 
 workflow callRemora {
 
@@ -75,7 +75,6 @@ workflow callRemora {
         input:
             sampleIdentifier = sampleIdentifier,
             remoraOutputTarballs = if (gpuCount > 0) then flatten(select_all(remoraGPU.outputTarball)) else flatten(select_all(remoraCPU.outputTarball)),
-            remoraOutputTypes = remoraOutputTypes,
             diskSizeGB = sum.value * 5, #output tar, output untar, merged files, tarred merge, slop
             zones=zones,
             dockerImage=dockerImage
@@ -340,7 +339,6 @@ task sum {
 task mergeRemora {
     input {
         Array[File?] remoraOutputTarballs
-        Array[String] remoraOutputTypes
         String? sampleIdentifier
         Int threadCount = 8
         Int memSizeGB = 8
