@@ -63,14 +63,14 @@ workflow callRemora {
 
     call sum {
         input:
-            integers = if (gpuCount > 0) then flatten(select_all(remoraGPU.fileSizeGB)) else flatten(select_all(remoraCPU.fileSizeGB)),
+            integers = if (gpuCount > 0) then remoraGPU.fileSizeGB else remoraCPU.fileSizeGB,
             dockerImage=dockerImage
     }
 
     call mergeRemora {
         input:
             sampleIdentifier = sampleIdentifier,
-            remoraOutputTarballs = if (gpuCount > 0) then flatten(select_all(remoraGPU.outputTarball)) else flatten(select_all(remoraCPU.outputTarball)),
+            remoraOutputTarballs = if (gpuCount > 0) then remoraGPU.outputTarball else remoraCPU.outputTarball,
             diskSizeGB = sum.value * 5, #output tar, output untar, merged files, tarred merge, slop
             zones=zones,
             dockerImage=dockerImage
