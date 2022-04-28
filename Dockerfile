@@ -52,7 +52,5 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.13/samtools-1.
     tar xvf samtools-1.13.tar.bz2 && \
     rm -r /opt/samtools-1.13.tar.bz2 && \
     cd samtools-1.13/ && \
-    autoheader && \
-    autoconf -Wno-header && \
     ./configure && \
     make install
