@@ -9,8 +9,11 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 
 RUN apt-get update \
     && apt-get install -y wget git libnvidia-compute-510-server uuid \
+        build-essential bzip2 zlib1g-dev libbz2-dev libcurl4-gnutls-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev \
         # python3 python3-pip lsb-release apt-transport-https \
-    && apt-get clean
+    && apt-get clean \
+    && apt purge \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ENV PLATFORM=$(lsb_release -cs)
 # RUN bash -l -c 'echo export PLATFORM="$(lsb_release -cs)" >> /etc/bash.bashrc'
@@ -36,3 +39,20 @@ ENV PATH=/ont-guppy/bin:$PATH
 # RUN apt install -y cuda-toolkit-11-6
 # RUN apt-get clean
 # RUN apt install -y nvidia-cuda-toolkit 
+
+WORKDIR /opt
+RUN wget https://github.com/samtools/htslib/releases/download/1.13/htslib-1.13.tar.bz2 && \
+    tar -xvf htslib-1.13.tar.bz2 && \
+    rm -r /opt/htslib-1.13.tar.bz2 && \
+    cd htslib-1.13 && \
+    ./configure && \
+    make install
+WORKDIR /opt
+RUN wget https://github.com/samtools/samtools/releases/download/1.13/samtools-1.13.tar.bz2 && \
+    tar xvf samtools-1.13.tar.bz2 && \
+    rm -r /opt/samtools-1.13.tar.bz2 && \
+    cd samtools-1.13/ && \
+    autoheader && \
+    autoconf -Wno-header && \
+    ./configure && \
+    make install
