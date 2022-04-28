@@ -17,7 +17,7 @@ workflow callRemora {
         Int threadCount = 64
         Int gpuCount = 0
         Array[String] zones = ['us-central1-c']
-        String dockerImage = "xiaoyuz/guppy:6.1.2"
+        String dockerImage = "xiaoyuz/guppy:latest"
     }
 
     scatter (inputFile in inputTarballOrFast5s) {
@@ -86,7 +86,7 @@ task untar {
         File fileToUntar
         Int diskSizeGB = 512
         Array[String] zones = ['us-central1-c']
-        String dockerImage = "xiaoyuz/guppy:6.1.2"
+        String dockerImage = "xiaoyuz/guppy:latest"
     }
 
     command <<<
@@ -163,7 +163,7 @@ task remoraGPU {
         String nvidiaDriverVersion = "418.87.00"
         Int maxRetries = 4 # workaround for Terra failure to initilize drivers
         Array[String] zones = 	[ "us-central1-c" ]
-        String dockerImage = "xiaoyuz/guppy:6.1.2"
+        String dockerImage = "xiaoyuz/guppy:latest"
     }
 
 	command <<<
@@ -245,7 +245,7 @@ task remoraCPU {
         Int gpuCount = 1
         Int maxRetries = 4 # workaround for Terra failure to initilize drivers
         Array[String] zones =   [ "us-central1-c" ]
-        String dockerImage = "xiaoyuz/guppy:6.1.2"
+        String dockerImage = "xiaoyuz/guppy:latest"
     }
 
     command <<<
@@ -335,7 +335,7 @@ task mergeRemora {
         Int memSizeGB = 8
         Int diskSizeGB = 128
         Array[String] zones = ['us-central1-c']
-        String dockerImage = "xiaoyuz/guppy:6.1.2"
+        String dockerImage = "xiaoyuz/guppy:latest"
     }
     Array[File] allValidRemoraOutputTarballs = select_all(remoraOutputTarballs)
 

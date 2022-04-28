@@ -3,6 +3,10 @@ FROM nvidia/cuda:11.6.2-base-ubuntu20.04
 # ENV TZ=America/Chicago
 # RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# https://forums.developer.nvidia.com/t/18-04-cuda-docker-image-is-broken/212892/8
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
+
 RUN apt-get update \
     && apt-get install -y wget git libnvidia-compute-510-server uuid \
         # python3 python3-pip lsb-release apt-transport-https \
