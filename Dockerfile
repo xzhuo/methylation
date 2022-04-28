@@ -1,10 +1,10 @@
-FROM nvidia/cuda:11.6.2-runtime-ubuntu20.04
+FROM nvidia/cuda:11.6.2-base-ubuntu20.04
 
 # ENV TZ=America/Chicago
 # RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y wget git libnvidia-compute-510-server \
+    && apt-get install -y wget git libnvidia-compute-510-server uuid \
         # python3 python3-pip lsb-release apt-transport-https \
     && apt-get clean
 
