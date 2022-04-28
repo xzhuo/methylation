@@ -288,6 +288,7 @@ task remoraCPU {
         cmd+=( --bam_out )
 
         # run remora command
+        echo "$cmd"
         "${cmd[@]}"
 
         # save output
