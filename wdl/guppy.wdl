@@ -90,7 +90,7 @@ task untar {
         File fileToUntar
         Int diskSizeGB = 512
         Array[String] zones = ['us-central1-c']
-        String dockerImage = "tpesout/megalodon:latest"
+        String dockerImage = "xiaoyuz/guppy:6.1.2"
     }
 
     command <<<
@@ -344,7 +344,7 @@ task mergeRemora {
         Int memSizeGB = 8
         Int diskSizeGB = 128
         Array[String] zones = ['us-central1-c']
-        String dockerImage = "tpesout/megalodon:latest"
+        String dockerImage = "xiaoyuz/guppy:6.1.2"
     }
     Array[File] allValidRemoraOutputTarballs = select_all(remoraOutputTarballs)
 
