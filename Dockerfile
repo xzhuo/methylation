@@ -13,7 +13,7 @@ RUN apt-get update \
         # python3 python3-pip lsb-release apt-transport-https \
     && apt-get clean \
     && apt purge \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ENV PLATFORM=$(lsb_release -cs)
 # RUN bash -l -c 'echo export PLATFORM="$(lsb_release -cs)" >> /etc/bash.bashrc'
