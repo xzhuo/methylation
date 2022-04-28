@@ -1,6 +1,5 @@
 version: 1.0
 workflows:
-  - subclass: WDL
+  - name: remora
+    subclass: WDL
     primaryDescriptorPath: guppy.wdl
-    authors:
-      - name: Xiaoyu Zhuo
