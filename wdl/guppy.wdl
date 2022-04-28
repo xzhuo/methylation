@@ -31,35 +31,31 @@ workflow callRemora {
         Array[File] fast5s = if untar.didUntar then untar.untarredFast5s else [inputFile]
 
         if (gpuCount > 0) {
-            scatter (fast5 in fast5s) {
-                call remoraGPU {
-                    input:
-                       inputFast5s = [fast5],
-                       referenceFasta = referenceFasta,
-                       guppyConfig = guppyConfig,
-                       memSizeGB = memSizeGB,
-                       threadCount = threadCount,
-                       diskSizeGB = untar.fileSizeGB * 2 + 5,
-                       gpuCount = gpuCount,
-                       zones=zones,
-                       dockerImage=dockerImage
-                }
+            call remoraGPU {
+                input:
+                    inputFast5s = fast5s,
+                    referenceFasta = referenceFasta,
+                    guppyConfig = guppyConfig,
+                    memSizeGB = memSizeGB,
+                    threadCount = threadCount,
+                    diskSizeGB = untar.fileSizeGB * 2 + 5,
+                    gpuCount = gpuCount,
+                    zones=zones,
+                    dockerImage=dockerImage
             }
         }
 
         if (gpuCount <= 0) {
-            scatter (fast5 in fast5s) {
-                call remoraCPU {
-                    input:
-                       inputFast5s = [fast5],
-                       referenceFasta = referenceFasta,
-                       guppyConfig = guppyConfig,
-                       memSizeGB = memSizeGB,
-                       threadCount = threadCount,
-                       diskSizeGB = untar.fileSizeGB * 2 + 5,
-                       zones=zones,
-                       dockerImage=dockerImage
-                }
+            call remoraCPU {
+                input:
+                    inputFast5s = fast5s,
+                    referenceFasta = referenceFasta,
+                    guppyConfig = guppyConfig,
+                    memSizeGB = memSizeGB,
+                    threadCount = threadCount,
+                    diskSizeGB = untar.fileSizeGB * 2 + 5,
+                    zones=zones,
+                    dockerImage=dockerImage
             }
         }
 
@@ -200,12 +196,7 @@ task remoraGPU {
         cmd+=( --bam_out )
 
         # add GPU numbers
-        cmd+=( --devices )
-        G=0
-        while [[ $G < ~{gpuCount} ]] ; do
-            cmd+=( $G )
-            G=$((G+1))
-        done
+        cmd+=( --devices cuda:all)
 
         # run remora command
         "${cmd[@]}"
@@ -282,7 +273,7 @@ task remoraCPU {
         # start constructing remora command
         cmd=(/ont-guppy/bin/guppy_basecaller -i input_files/)
         cmd+=( -a ~{referenceFasta} )
-        cmd+=( --s output/ )
+        cmd+=( -s output/ )
         cmd+=( -c dna_r9.4.1_450bps_modbases_5mc_cg_sup_prom.cfg )
         cmd+=( --bam_out )
 
