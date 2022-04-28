@@ -2,4 +2,4 @@ version: 1.0
 workflows:
   - name: remora
     subclass: WDL
-    primaryDescriptorPath: guppy.wdl
+    primaryDescriptorPath: /wdl/guppy.wdl
