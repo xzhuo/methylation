@@ -191,12 +191,12 @@ task remoraGPU {
         # start constructing remora command
         cmd=(/ont-guppy/bin/guppy_basecaller -i input_files/)
         cmd+=( -a ~{referenceFasta} )
-        cmd+=( --s output/ )
+        cmd+=( -s output/ )
         cmd+=( -c dna_r9.4.1_450bps_modbases_5mc_cg_sup_prom.cfg )
         cmd+=( --bam_out )
 
         # add GPU numbers
-        cmd+=( --devices cuda:all)
+        cmd+=( --device cuda:all)
 
         # run remora command
         "${cmd[@]}"
