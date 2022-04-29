@@ -204,7 +204,7 @@ task remoraGPU {
         # save output
         UUID=`uuid`
         mkdir output_$UUID
-        ls output/ | xargs -n1 -I{} mv output/{} output_$UUID/${UUID}_{}
+        ls output/ | xargs -n1 -I{} mv output/{} output_$UUID/{}
         tar czvf remora_output_$UUID.tar.gz output_$UUID/
 
         # get output size
