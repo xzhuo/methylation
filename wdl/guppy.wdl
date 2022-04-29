@@ -284,7 +284,7 @@ task remoraCPU {
         # save output
         UUID=`uuid`
         mkdir output_$UUID
-        ls output/ | xargs -n1 -I{} mv output/{} output_$UUID/${UUID}_{}
+        ls output/ | xargs -n1 -I{} mv output/{} output_$UUID/{}
         tar czvf remora_output_$UUID.tar.gz output_$UUID/
 
         # get output size
@@ -366,14 +366,19 @@ task mergeRemora {
 
         echo "BASECALLS: $(date)"
         mkdir tmp_basecalls
-        find extracted/ -name *.fastq | xargs -n1 -I{} mv {} tmp_basecalls/
-        cat tmp_basecalls/*.fastq >output/merged_basecalls.fastq
+        find extracted/pass -name *.fastq | xargs -n1 -I{} mv {} tmp_basecalls/pass
+        cat tmp_basecalls/pass/*.fastq >output/pass/merged_basecalls.fastq
+        find extracted/fail -name *.fastq | xargs -n1 -I{} mv {} tmp_basecalls/fail
+        cat tmp_basecalls/fail/*.fastq >output/fail/merged_basecalls.fastq
 
         echo "MAPPINGS: $(date)"
         mkdir tmp_mappings
-        find extracted/ -name *.bam | xargs -n1 -I{} bash -c 'samtools sort -@~{threadCount} {} >tmp_mappings/$(basename {})'
-        samtools merge -@~{threadCount} output/merged_mappings.bam tmp_mappings/*
-        samtools index -@~{threadCount} output/merged_mappings.bam
+        find extracted/pass -name *.bam | xargs -n1 -I{} bash -c 'samtools sort -@~{threadCount} {} >tmp_mappings/pass/$(basename {})'
+        samtools merge -@~{threadCount} output/pass/merged_mappings.bam tmp_mappings/pass/*
+        samtools index -@~{threadCount} output/pass/merged_mappings.bam
+        find extracted/fail -name *.bam | xargs -n1 -I{} bash -c 'samtools sort -@~{threadCount} {} >tmp_mappings/fail/$(basename {})'
+        samtools merge -@~{threadCount} output/fail/merged_mappings.bam tmp_mappings/fail/*
+        samtools index -@~{threadCount} output/fail/merged_mappings.bam
 
         mkdir tmp_mapping_summary
         #TODO merge mapping summary
