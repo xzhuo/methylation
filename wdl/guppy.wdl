@@ -360,8 +360,7 @@ task mergeRemora {
         cd ..
 
         # setup output
-        mkdir -p output/pass
-        mkdir -p output/fail
+        mkdir output
 
         # handle each output type from remora
 
@@ -369,19 +368,19 @@ task mergeRemora {
         mkdir -p tmp_basecalls/pass
         mkdir -p tmp_basecalls/fail
         find extracted/*/pass -name *.fastq | xargs -n1 -I{} mv {} tmp_basecalls/pass
-        cat tmp_basecalls/pass/*.fastq >output/pass/merged_basecalls.fastq
+        cat tmp_basecalls/pass/*.fastq >output/pass.merged_basecalls.fastq
         find extracted/*/fail -name *.fastq | xargs -n1 -I{} mv {} tmp_basecalls/fail
-        cat tmp_basecalls/fail/*.fastq >output/fail/merged_basecalls.fastq
+        cat tmp_basecalls/fail/*.fastq >output/fail.merged_basecalls.fastq
 
         echo "MAPPINGS: $(date)"
         mkdir -p tmp_mappings/pass
         mkdir -p tmp_mappings/fail
         find extracted/*/pass -name *.bam | xargs -n1 -I{} bash -c 'samtools sort -@~{threadCount} {} >tmp_mappings/pass/$(basename {})'
-        samtools merge -@~{threadCount} output/pass/merged_mappings.bam tmp_mappings/pass/*
-        samtools index -@~{threadCount} output/pass/merged_mappings.bam
+        samtools merge -@~{threadCount} output/pass.merged_mappings.bam tmp_mappings/pass/*
+        samtools index -@~{threadCount} output/pass.merged_mappings.bam
         find extracted/*/fail -name *.bam | xargs -n1 -I{} bash -c 'samtools sort -@~{threadCount} {} >tmp_mappings/fail/$(basename {})'
-        samtools merge -@~{threadCount} output/fail/merged_mappings.bam tmp_mappings/fail/*
-        samtools index -@~{threadCount} output/fail/merged_mappings.bam
+        samtools merge -@~{threadCount} output/fail.merged_mappings.bam tmp_mappings/fail/*
+        samtools index -@~{threadCount} output/fail.merged_mappings.bam
 
         mkdir tmp_mapping_summary
         #TODO merge mapping summary
